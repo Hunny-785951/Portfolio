@@ -11,10 +11,6 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     unoptimized: false,
   },
-  devIndicators: {
-    appIsrStatus: false,
-    buildActivity: false,
-  },
 };
 
 export default nextConfig;
