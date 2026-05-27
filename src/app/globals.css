@@ -8,8 +8,8 @@
   --color-accent: var(--accent);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
-  --font-display: var(--font-space-grotesk);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-outfit);
+  --font-sans: var(--font-plus-jakarta-sans);
 }
 
 :root {
