@@ -1,61 +1,120 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const trailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+    // Only run on non-touch devices
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.closest("a") ||
-        target.closest("button")
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
+    const cursor = cursorRef.current;
+    const trail = trailRef.current;
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let trailX = 0;
+    let trailY = 0;
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      // Update cursor position directly without requestAnimationFrame for zero latency
+      if (cursor) {
+        cursor.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`;
       }
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
+    const animateTrail = () => {
+      // Easing for the trail
+      trailX += (mouseX - trailX) * 0.15;
+      trailY += (mouseY - trailY) * 0.15;
+
+      if (trail) {
+        trail.style.transform = `translate(calc(${trailX}px - 50%), calc(${trailY}px - 50%))`;
+      }
+      requestAnimationFrame(animateTrail);
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    const animationFrame = requestAnimationFrame(animateTrail);
+
+    // Hover states for links and buttons
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a') || target.closest('button') || target.closest('.magnetic') || target.closest('.c-cell')) {
+        document.body.classList.add('cursor-hover');
+      }
+    };
+
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a') || target.closest('button') || target.closest('.magnetic') || target.closest('.c-cell')) {
+        document.body.classList.remove('cursor-hover');
+      }
+    };
+
+    // Magnetic logic for elements with .magnetic
+    // Magnetic logic for elements with .magnetic
+    
+    const moveMagnetic = (e: MouseEvent) => {
+      const target = e.currentTarget as HTMLElement;
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      target.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    };
+    
+    const resetMagnetic = (e: MouseEvent) => {
+      const target = e.currentTarget as HTMLElement;
+      target.style.transform = 'translate(0px, 0px)';
+    };
+
+    const initMagnetic = () => {
+      document.querySelectorAll('.magnetic').forEach(el => {
+        el.addEventListener('mousemove', moveMagnetic as EventListener);
+        el.addEventListener('mouseleave', resetMagnetic as EventListener);
+      });
+    };
+    
+    initMagnetic();
+
+    // Re-initialize magnetic on mutations (e.g. navigation)
+    const observer = new MutationObserver(() => {
+      // Remove old listeners
+      document.querySelectorAll('.magnetic').forEach(el => {
+        el.removeEventListener('mousemove', moveMagnetic as EventListener);
+        el.removeEventListener('mouseleave', resetMagnetic as EventListener);
+      });
+      initMagnetic();
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseout", handleMouseOut);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseout", handleMouseOut);
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      document.querySelectorAll('.magnetic').forEach(el => {
+        el.removeEventListener('mousemove', moveMagnetic as EventListener);
+        el.removeEventListener('mouseleave', resetMagnetic as EventListener);
+      });
     };
   }, []);
 
   return (
     <>
-      <motion.div
-        className="fixed top-0 left-0 w-12 h-12 border border-white/20 rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block"
-        animate={{
-          x: mousePosition.x - 24,
-          y: mousePosition.y - 24,
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? "rgba(255, 255, 255, 0.1)" : "transparent",
-        }}
-        transition={{ type: "spring", stiffness: 100, damping: 20, mass: 0.1 }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-3 h-3 bg-gradient-to-r from-primary to-accent rounded-full pointer-events-none z-[100] hidden md:block shadow-[0_0_10px_var(--primary)]"
-        animate={{
-          x: mousePosition.x - 6,
-          y: mousePosition.y - 6,
-          scale: isHovering ? 0 : 1,
-        }}
-        transition={{ type: "tween", duration: 0.05 }}
-      />
+      <div id="cursor" ref={cursorRef} style={{ left: 0, top: 0, transform: 'translate(-50%, -50%)' }}></div>
+      <div id="cursor-trail" ref={trailRef} style={{ left: 0, top: 0, transform: 'translate(-50%, -50%)' }}></div>
     </>
   );
 }

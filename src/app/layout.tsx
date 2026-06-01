@@ -1,24 +1,44 @@
 import type { Metadata } from "next";
-import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import { Space_Grotesk, Inter, Syncopate, Orbitron, Iceland } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
-import SmoothScroll from "@/components/SmoothScroll";
-import RGBGlow from "@/components/RGBGlow";
+import Preloader from "@/components/Preloader";
 import { Analytics } from "@vercel/analytics/next";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const syncopate = Syncopate({
+  variable: "--font-wide",
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
+const orbitron = Orbitron({
+  variable: "--font-tech",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const iceland = Iceland({
+  variable: "--font-iceland",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
-  title: "Himesh Solanki | Full-Stack Architect",
-  description: "High-performance digital experiences and Cyber Security.",
+  title: "Himesh — Frontend Developer",
+  description:
+    "I'm Himesh — a frontend developer from Surat, India. I craft clean, fast, and thoughtful web experiences.",
 };
 
 export default function RootLayout({
@@ -27,15 +47,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${outfit.variable} antialiased dark`} style={{ colorScheme: 'dark' }}>
-      <body className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30 selection:text-primary overflow-x-hidden">
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${syncopate.variable} ${orbitron.variable} ${iceland.variable}`}>
+      <body>
+        <Preloader />
         <CustomCursor />
-        <RGBGlow />
-        <SmoothScroll>
-          <main className="flex-1 w-full flex flex-col relative overflow-hidden">
-            {children}
-          </main>
-        </SmoothScroll>
+        {children}
         <Analytics />
       </body>
     </html>
