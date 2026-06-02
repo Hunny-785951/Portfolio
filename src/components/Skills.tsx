@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function Skills() {
   const groups = [
     {
@@ -21,14 +25,19 @@ export default function Skills() {
 
         <div className="skills-grid stagger-children">
           {groups.map((group) => (
-            <div key={group.label} className="skill-group">
+            <motion.div 
+              key={group.label} 
+              className="skill-group"
+              whileHover={{ y: -5, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
               <div className="skill-group-label">{group.label}</div>
               <div className="skill-items">
                 {group.items.map((item) => (
                   <span key={item} className="skill-item">{item}</span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

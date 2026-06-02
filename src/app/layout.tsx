@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, Syncopate, Orbitron, Iceland } from "next/font/go
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import Preloader from "@/components/Preloader";
+import SmoothScroll from "@/components/SmoothScroll";
 import { Analytics } from "@vercel/analytics/next";
 
 const spaceGrotesk = Space_Grotesk({
@@ -49,10 +50,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${syncopate.variable} ${orbitron.variable} ${iceland.variable}`}>
       <body>
-        <Preloader />
-        <CustomCursor />
-        {children}
-        <Analytics />
+        <SmoothScroll>
+          <Preloader />
+          <CustomCursor />
+          {children}
+          <Analytics />
+        </SmoothScroll>
       </body>
     </html>
   );
