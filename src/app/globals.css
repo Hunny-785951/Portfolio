@@ -7,8 +7,8 @@
   --bg: #0a0a0b;
   --surface: #111114;
   --surface2: #161619;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.15);
+  --border: var(--overlay-7);
+  --border-hover: var(--overlay-15);
   --text: #f0f0f0;
   --text-muted: #888;
   --text-dim: #555;
@@ -129,7 +129,7 @@ body:not(.loaded) nav {
 }
 
 nav.scrolled {
-  background: rgba(10, 10, 11, 0.85);
+  background: var(--nav-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -274,8 +274,8 @@ nav.scrolled {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(to right, var(--overlay-2) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--overlay-2) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
 }
@@ -424,7 +424,7 @@ nav.scrolled {
   padding: 13px 26px;
   background: transparent;
   color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--overlay-8);
   border-radius: 10px;
   font-family: var(--font-body);
   font-size: 15px;
@@ -436,8 +436,8 @@ nav.scrolled {
 
 .btn-secondary:hover {
   color: var(--text);
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--overlay-15);
+  background: var(--overlay-3);
 }
 
 .hero-socials {
@@ -454,16 +454,16 @@ nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--overlay-2);
+  border: 1px solid var(--overlay-6);
   border-radius: 12px;
   color: var(--text-muted);
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .social-box:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--overlay-6);
+  border-color: var(--overlay-12);
   color: var(--text);
 }
 
@@ -483,7 +483,7 @@ nav.scrolled {
   aspect-ratio: 2/3;
   height: auto;
   background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--overlay-4);
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -520,7 +520,7 @@ nav.scrolled {
 
 .h-stat-card {
   background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--overlay-4);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -1490,7 +1490,7 @@ body:not(.loaded) .scroll-hint {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, var(--overlay-12), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s;
 }
@@ -1786,7 +1786,7 @@ footer {
   top: 64px;
   left: 0;
   right: 0;
-  background: rgba(10, 10, 11, 0.97);
+  background: var(--nav-bg-solid);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);

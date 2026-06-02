@@ -19,9 +19,9 @@ export default function About() {
             </p>
           </div>
           <div className="about-meta">
-            <div className="meta-row"><div className="meta-dot"></div>Surat, India</div>
+            <div className="meta-row"><div className="meta-dot"></div>Vadodara, India</div>
             <div className="meta-row"><div className="meta-dot"></div>B.Tech CSE</div>
-            <div className="meta-row"><div className="meta-dot"></div>Open to full-time roles</div>
+            <div className="meta-row"><div className="meta-dot"></div>Open to work</div>
           </div>
           <div className="tech-tags" style={{ marginTop: "24px" }}>
             <span className="tech-tag">React.js</span>

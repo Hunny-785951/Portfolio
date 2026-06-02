@@ -37,9 +37,9 @@ const iceland = Iceland({
 });
 
 export const metadata: Metadata = {
-  title: "Himesh — Frontend Developer",
+  title: "Himesh — Full Stack Developer",
   description:
-    "I'm Himesh — a frontend developer from Surat, India. I craft clean, fast, and thoughtful web experiences.",
+    "I'm Himesh — a Full stack developer from Vadodara, India. I craft clean, fast, and thoughtful web experiences.",
 };
 
 export default function RootLayout({
