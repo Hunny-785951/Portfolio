@@ -46,6 +46,11 @@ body {
   cursor: none;
 }
 
+/* Hide default system cursor on interactive elements since we use a custom cursor */
+a, button, input, textarea, select, label, [role="button"], .magnetic {
+  cursor: none !important;
+}
+
 /* ==========================================
    CUSTOM CURSOR
    ========================================== */
@@ -328,7 +333,7 @@ nav.scrolled {
   letter-spacing: 0.5px;
   margin-bottom: 28px;
   opacity: 0;
-  animation: reveal-up 0.8s var(--ease-out) 0.2s forwards;
+  animation: reveal-up 0.8s var(--ease-out) 0.9s forwards;
 }
 
 .hero-greeting {
@@ -339,7 +344,7 @@ nav.scrolled {
   width: fit-content;
   margin-bottom: 8px;
   opacity: 0;
-  animation: reveal-up 0.8s var(--ease-out) 0.25s forwards;
+  animation: reveal-up 0.8s var(--ease-out) 0.95s forwards;
 }
 
 .hero-intro {
@@ -350,7 +355,7 @@ nav.scrolled {
   width: fit-content;
   margin-bottom: 4px;
   opacity: 0;
-  animation: reveal-up 0.8s var(--ease-out) 0.3s forwards;
+  animation: reveal-up 0.9s var(--ease-out) 0.9s forwards;
 }
 
 .hero-name {
@@ -363,7 +368,7 @@ nav.scrolled {
   letter-spacing: 2px;
   margin-bottom: 32px;
   opacity: 0;
-  animation: reveal-up 0.9s var(--ease-out) 0.35s forwards;
+  animation: reveal-up 0.9s var(--ease-out) 0.85s forwards;
 }
 
 .hero-sub {
@@ -373,7 +378,7 @@ nav.scrolled {
   max-width: 440px;
   margin-bottom: 36px;
   opacity: 0;
-  animation: reveal-up 0.9s var(--ease-out) 0.5s forwards;
+  animation: reveal-up 0.9s var(--ease-out) 1s forwards;
 }
 
 .hero-sub strong {
@@ -386,7 +391,7 @@ nav.scrolled {
   gap: 16px;
   align-items: center;
   opacity: 0;
-  animation: reveal-up 0.9s var(--ease-out) 0.65s forwards;
+  animation: reveal-up 0.9s var(--ease-out) 1.15s forwards;
 }
 
 .btn-primary {
@@ -440,7 +445,7 @@ nav.scrolled {
   gap: 12px;
   margin-top: 48px;
   opacity: 0;
-  animation: reveal-up 0.9s var(--ease-out) 0.8s forwards;
+  animation: reveal-up 0.9s var(--ease-out) 1.3s forwards;
 }
 
 .social-box {
@@ -468,7 +473,7 @@ nav.scrolled {
   flex-direction: column;
   gap: 16px;
   opacity: 0;
-  animation: reveal-right 0.9s var(--ease-out) 0.7s forwards;
+  animation: reveal-right 0.9s var(--ease-out) 1.2s forwards;
   max-width: 440px;
   width: 100%;
 }
@@ -499,7 +504,7 @@ nav.scrolled {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
   transition: transform 0.5s var(--ease-out);
 }
 
@@ -572,7 +577,7 @@ nav.scrolled {
   letter-spacing: 1px;
   text-transform: uppercase;
   opacity: 0;
-  animation: reveal-up 1s var(--ease-out) 1.2s forwards;
+  animation: reveal-up 1s var(--ease-out) 1.7s forwards;
 }
 
 .scroll-line {
@@ -1609,7 +1614,7 @@ footer {
 .reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition: opacity 0.7s var(--ease-out) 0.2s, transform 0.7s var(--ease-out) 0.2s;
 }
 
 .reveal.visible {
@@ -1620,7 +1625,7 @@ footer {
 .reveal-left {
   opacity: 0;
   transform: translateX(-30px);
-  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition: opacity 0.7s var(--ease-out) 0.2s, transform 0.7s var(--ease-out) 0.2s;
 }
 
 .reveal-left.visible {
@@ -1631,7 +1636,7 @@ footer {
 .reveal-right {
   opacity: 0;
   transform: translateX(30px);
-  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition: opacity 0.7s var(--ease-out) 0.2s, transform 0.7s var(--ease-out) 0.2s;
 }
 
 .reveal-right.visible {
@@ -1642,7 +1647,7 @@ footer {
 .reveal-scale {
   opacity: 0;
   transform: scale(0.94);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transition: opacity 0.6s var(--ease-out) 0.2s, transform 0.6s var(--ease-out) 0.2s;
 }
 
 .reveal-scale.visible {
@@ -1654,37 +1659,37 @@ footer {
 .stagger-children>* {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transition: opacity 0.6s var(--ease-out) 0.2s, transform 0.6s var(--ease-out) 0.2s;
 }
 
 .stagger-children.visible>*:nth-child(1) {
   opacity: 1;
   transform: none;
-  transition-delay: 0s;
+  transition-delay: 0.2s;
 }
 
 .stagger-children.visible>*:nth-child(2) {
   opacity: 1;
   transform: none;
-  transition-delay: 0.08s;
+  transition-delay: 0.28s;
 }
 
 .stagger-children.visible>*:nth-child(3) {
   opacity: 1;
   transform: none;
-  transition-delay: 0.16s;
+  transition-delay: 0.36s;
 }
 
 .stagger-children.visible>*:nth-child(4) {
   opacity: 1;
   transform: none;
-  transition-delay: 0.24s;
+  transition-delay: 0.44s;
 }
 
 .stagger-children.visible>*:nth-child(5) {
   opacity: 1;
   transform: none;
-  transition-delay: 0.32s;
+  transition-delay: 0.52s;
 }
 
 /* Number count-up */
@@ -1921,13 +1926,18 @@ footer {
     cursor: auto;
   }
 
+  /* Restore default cursor on mobile */
+  a, button, input, textarea, select, label, [role="button"], .magnetic {
+    cursor: auto !important;
+  }
+
   .btn-primary,
   .btn-secondary,
   .submit-btn,
   .nav-cta,
   .work-link,
   .social-link {
-    cursor: pointer;
+    cursor: pointer !important;
   }
 }
 
