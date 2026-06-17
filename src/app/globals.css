@@ -1692,6 +1692,36 @@ footer {
   transition-delay: 0.52s;
 }
 
+.stagger-children.visible>*:nth-child(6) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.60s;
+}
+
+.stagger-children.visible>*:nth-child(7) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.68s;
+}
+
+.stagger-children.visible>*:nth-child(8) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.76s;
+}
+
+.stagger-children.visible>*:nth-child(9) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.84s;
+}
+
+.stagger-children.visible>*:nth-child(10) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.92s;
+}
+
 /* Number count-up */
 .counter {
   display: inline-block;
