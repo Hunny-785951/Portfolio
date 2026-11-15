@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, Syncopate, Orbitron, Iceland } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
-// import Preloader from "@/components/Preloader";
+import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -55,7 +55,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning>
         <SmoothScroll>
-          {/* <Preloader /> */}
+          <Preloader />
           <CustomCursor />
           {children}
           <Analytics />

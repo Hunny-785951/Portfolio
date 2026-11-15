@@ -11,31 +11,41 @@ export default function Preloader() {
   useGSAP(() => {
     const tl = gsap.timeline({
       onComplete: () => {
-        document.body.classList.add("loaded");
-        window.dispatchEvent(new CustomEvent("siteLoaded"));
         setDone(true);
       },
     });
 
     tl.fromTo(
       loaderRef.current,
-      { scale: 0.8, opacity: 0, rotation: -10 },
-      { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(1.7)" }
+      { scale: 0.75, opacity: 0, rotation: -8 },
+      { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.6)" }
     )
-      .to(".loader .box", {
-        scale: 1.1,
-        duration: 0.5,
+      .to(loaderRef.current, {
+        scale: 1.06,
+        duration: 0.4,
         yoyo: true,
         repeat: 1,
-        ease: "power2.inOut",
+        ease: "sine.inOut",
       })
-      .to(containerRef.current, {
+      .to(loaderRef.current, {
+        scale: 0.8,
         opacity: 0,
-        scale: 1.05,
-        duration: 0.6,
-        ease: "power3.inOut",
-        delay: 0.2,
-      });
+        duration: 0.35,
+        ease: "power2.in",
+      })
+      .to(
+        containerRef.current,
+        {
+          opacity: 0,
+          duration: 0.65,
+          ease: "power2.inOut",
+          onStart: () => {
+            document.body.classList.add("loaded");
+            window.dispatchEvent(new CustomEvent("siteLoaded"));
+          },
+        },
+        "-=0.15"
+      );
   }, { scope: containerRef });
 
   if (done) return null;

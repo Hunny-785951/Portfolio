@@ -58,12 +58,11 @@ export default function Testimonials() {
       });
 
       if (!isReduced) {
-        // PHASE 1: Quick & Snappy Entrance (0.0 -> 0.20)
-        // Everything appears immediately when scrolling into the section
+        // PHASE 1: Quick & Snappy Entrance (0.0 -> 0.16)
         scrollTl.fromTo(
           contentRef.current,
           {
-            scale: 0.84,
+            scale: 0.88,
             autoAlpha: 0,
             filter: "blur(8px)",
             transformOrigin: "center center",
@@ -72,58 +71,58 @@ export default function Testimonials() {
             scale: 1,
             autoAlpha: 1,
             filter: "blur(0px)",
-            duration: 0.2,
+            duration: 0.16,
             ease: "power2.out",
           },
           0
         );
 
         if (tag.length) {
-          scrollTl.fromTo(tag, { y: -12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.14 }, 0.02);
+          scrollTl.fromTo(tag, { y: -12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.12 }, 0.02);
         }
         if (title.length) {
-          scrollTl.fromTo(title, { y: 15, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.15 }, 0.04);
+          scrollTl.fromTo(title, { y: 15, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.14 }, 0.03);
         }
         if (pill.length) {
-          scrollTl.fromTo(pill, { y: -12, autoAlpha: 0, scale: 0.9 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.15 }, 0.04);
+          scrollTl.fromTo(pill, { y: -12, autoAlpha: 0, scale: 0.9 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.14 }, 0.03);
         }
         if (cards.length) {
           scrollTl.fromTo(
             cards,
             { autoAlpha: 0, y: 20, scale: 0.96 },
-            { autoAlpha: 1, y: 0, scale: 1, stagger: 0.03, duration: 0.16, ease: "power2.out" },
-            0.05
+            { autoAlpha: 1, y: 0, scale: 1, stagger: 0.03, duration: 0.14, ease: "power2.out" },
+            0.04
           );
         }
         if (stars.length) {
           scrollTl.fromTo(
             stars,
             { scale: 0, autoAlpha: 0 },
-            { scale: 1, autoAlpha: 1, stagger: 0.01, duration: 0.12, ease: "back.out(2)" },
-            0.08
+            { scale: 1, autoAlpha: 1, stagger: 0.01, duration: 0.1, ease: "back.out(2)" },
+            0.06
           );
         }
 
-        // PHASE 2: LONG, STABLE HOLD / READ ZONE (0.20 -> 0.80)
-        // 60% of the entire section scroll remains comfortably locked, stable, and completely readable
-        scrollTl.to({}, { duration: 0.6 });
+        // PHASE 2: LONG, STABLE HOLD / READ ZONE (0.16 -> 0.84)
+        // 68% of the entire section scroll remains comfortably locked, stable, and completely readable
+        scrollTl.to({}, { duration: 0.68 });
 
-        // PHASE 3: Seamless Exit Zoom (0.80 -> 1.0)
+        // PHASE 3: Seamless Exit Zoom (0.84 -> 1.0)
         scrollTl.to(
           contentRef.current,
           {
             scale: 3.5,
             autoAlpha: 0,
             filter: "blur(14px)",
-            duration: 0.2,
+            duration: 0.16,
             ease: "power2.in",
           },
-          0.8
+          0.84
         );
       } else {
-        scrollTl.fromTo(contentRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0);
-        scrollTl.to({}, { duration: 0.6 });
-        scrollTl.to(contentRef.current, { autoAlpha: 0, duration: 0.2 }, 0.8);
+        scrollTl.fromTo(contentRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.16 }, 0);
+        scrollTl.to({}, { duration: 0.68 });
+        scrollTl.to(contentRef.current, { autoAlpha: 0, duration: 0.16 }, 0.84);
       }
 
       (cards as HTMLElement[]).forEach((card) => {
@@ -179,7 +178,7 @@ export default function Testimonials() {
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
-        padding: "40px 48px",
+        padding: "32px 48px",
         margin: "0",
         marginTop: "-100vh",
       }}

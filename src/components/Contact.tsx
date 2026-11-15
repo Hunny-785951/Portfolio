@@ -157,7 +157,7 @@ export default function Contact() {
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
-        padding: "40px 48px 24px",
+        padding: "32px 48px 20px",
         margin: "0",
         marginTop: "-100vh",
       }}

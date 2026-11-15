@@ -1115,8 +1115,8 @@ nav.scrolled {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 22px 24px;
+  border-radius: 14px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1135,6 +1135,7 @@ nav.scrolled {
   grid-column: span 2;
   background: linear-gradient(135deg, rgba(107, 92, 231, 0.14), rgba(17, 17, 20, 0.85));
   border-color: rgba(107, 92, 231, 0.3);
+  padding: 16px 20px;
 }
 
 .exp-stat-card.featured-stat:hover {
@@ -1146,12 +1147,12 @@ nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .exp-stat-number {
   font-family: var(--font-display);
-  font-size: clamp(26px, 2.4vw, 36px);
+  font-size: clamp(22px, 2vw, 30px);
   font-weight: 800;
   letter-spacing: -1.2px;
   line-height: 1;
@@ -1294,8 +1295,8 @@ nav.scrolled {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 22px 24px;
+  border-radius: 14px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2103,7 +2104,8 @@ nav.scrolled {
   }
 
   .testimonials-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
   }
 
   .github-inner {
@@ -2111,17 +2113,21 @@ nav.scrolled {
   }
 
   .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 36px;
   }
 
   .exp-layout-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 28px;
   }
 }
 
 @media (max-width: 768px) {
+  .exp-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
   nav {
     padding: 0 24px;
   }
@@ -2276,8 +2282,8 @@ nav.scrolled {
   justify-content: center;
   background: var(--bg);
   z-index: 99999;
-  transition: opacity 0.8s ease-in-out;
   opacity: 1;
+  will-change: opacity;
 }
 
 .preloader-wrapper.fade-out {

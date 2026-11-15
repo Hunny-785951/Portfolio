@@ -18,32 +18,49 @@ export default function Header() {
       const navLinks = q(".nav-links li");
       const navCta = q(".nav-cta");
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.1 });
+      const playNav = () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.1 });
 
-      if (logoPaths.length > 0) {
-        tl.fromTo(
-          logoPaths,
-          { drawSVG: "0%", opacity: 0 },
-          { drawSVG: "100%", opacity: 1, duration: 1, stagger: 0.15, ease: "power2.inOut" }
-        );
-      }
+        if (logoPaths.length > 0) {
+          tl.fromTo(
+            logoPaths,
+            { drawSVG: "0%", autoAlpha: 0 },
+            { drawSVG: "100%", autoAlpha: 1, duration: 1, stagger: 0.15, ease: "power2.inOut" }
+          );
+        }
 
-      if (navLinks.length > 0) {
-        tl.fromTo(
-          navLinks,
-          { opacity: 0, y: -20 },
-          { opacity: 1, y: 0, stagger: 0.07, duration: 0.6, ease: "power3.out" },
-          "-=0.5"
-        );
-      }
+        if (navLinks.length > 0) {
+          tl.fromTo(
+            navLinks,
+            { autoAlpha: 0, y: -20 },
+            { autoAlpha: 1, y: 0, stagger: 0.07, duration: 0.6, ease: "power3.out" },
+            "-=0.5"
+          );
+        }
 
-      if (navCta.length > 0) {
-        tl.fromTo(
-          navCta,
-          { opacity: 0, scale: 0.85, y: -10 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
-          "-=0.4"
-        );
+        if (navCta.length > 0) {
+          tl.fromTo(
+            navCta,
+            { autoAlpha: 0, scale: 0.85, y: -10 },
+            { autoAlpha: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
+            "-=0.4"
+          );
+        }
+      };
+
+      if (typeof document !== "undefined" && document.body.classList.contains("loaded")) {
+        playNav();
+      } else {
+        if (navRef.current) gsap.set(navRef.current, { autoAlpha: 0 });
+        let triggered = false;
+        const onLoaded = () => {
+          if (triggered) return;
+          triggered = true;
+          if (navRef.current) gsap.set(navRef.current, { autoAlpha: 1 });
+          playNav();
+        };
+        window.addEventListener("siteLoaded", onLoaded, { once: true });
+        setTimeout(onLoaded, 2600);
       }
     },
     { scope: navRef }

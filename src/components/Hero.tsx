@@ -27,124 +27,135 @@ export default function Hero() {
     () => {
       const isReduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      const tl = gsap.timeline({
-        delay: isReduced ? 0.05 : 0.2,
-        defaults: { ease: "power3.out" },
-      });
+      const playReveal = () => {
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.out" },
+        });
 
-      // Zoom IN animation to hero section to reveal the context
-      if (contentRef.current) {
-        tl.fromTo(
-          contentRef.current,
-          {
-            scale: isReduced ? 1 : 0.82,
-            opacity: 0,
-            y: isReduced ? 0 : 40,
-            filter: isReduced ? "none" : "blur(8px)",
-            transformOrigin: "center center",
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: isReduced ? 0.4 : 1.4,
-            ease: "power3.out",
-          }
-        );
-      }
+        // Background grid counter-zoom for deep perspective
+        if (gridRef.current) {
+          tl.fromTo(
+            gridRef.current,
+            { scale: 1.15, autoAlpha: 0 },
+            { scale: 1, autoAlpha: 1, duration: 1.4, ease: "power2.out" },
+            0
+          );
+        }
 
-      // Counter-zoom on background grid for depth
-      if (gridRef.current) {
-        tl.fromTo(
-          gridRef.current,
-          { scale: 1.2, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 1.5, ease: "power2.out" },
-          0
-        );
-      }
+        // Staggered reveal of hero left column
+        if (badgeRef.current) {
+          tl.fromTo(
+            badgeRef.current,
+            { autoAlpha: 0, y: -20, scale: 0.9 },
+            { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.7)" },
+            0.1
+          );
+        }
 
-      // Staggered reveal of hero left column
-      if (badgeRef.current) {
-        tl.fromTo(
+        const textTargets = [
+          greetingRef.current,
+          introRef.current,
+          nameRef.current,
+          subRef.current,
+        ].filter(Boolean);
+
+        if (textTargets.length > 0) {
+          tl.fromTo(
+            textTargets,
+            { autoAlpha: 0, y: 30 },
+            { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.85, ease: "power3.out" },
+            0.18
+          );
+        }
+
+        // Hero right column: 3D photo zoom-in & stats pop
+        if (photoCardRef.current) {
+          tl.fromTo(
+            photoCardRef.current,
+            { autoAlpha: 0, scale: 0.85, rotateY: -12, rotateX: 6, y: 30 },
+            { autoAlpha: 1, scale: 1, rotateY: 0, rotateX: 0, y: 0, duration: 1.2, ease: "power3.out" },
+            0.22
+          );
+        }
+
+        if (statsGridRef.current && statsGridRef.current.children.length > 0) {
+          tl.fromTo(
+            Array.from(statsGridRef.current.children),
+            { autoAlpha: 0, y: 22, scale: 0.9 },
+            { autoAlpha: 1, y: 0, scale: 1, stagger: 0.1, duration: 0.75, ease: "back.out(1.5)" },
+            0.38
+          );
+        }
+
+        if (actionsRef.current) {
+          tl.fromTo(
+            actionsRef.current,
+            { autoAlpha: 0, y: 20, scale: 0.96 },
+            { autoAlpha: 1, y: 0, scale: 1, duration: 0.75, ease: "back.out(1.4)" },
+            0.42
+          );
+        }
+
+        if (socialsRef.current && socialsRef.current.children.length > 0) {
+          tl.fromTo(
+            Array.from(socialsRef.current.children),
+            { autoAlpha: 0, scale: 0, y: 15 },
+            { autoAlpha: 1, scale: 1, y: 0, stagger: 0.07, duration: 0.55, ease: "back.out(2)" },
+            0.5
+          );
+        }
+
+        // DrawSVG on CTA button arrow path
+        if (arrowPathRef.current) {
+          tl.fromTo(
+            arrowPathRef.current,
+            { drawSVG: "0%" },
+            { drawSVG: "100%", duration: 0.8, ease: "power2.inOut" },
+            0.55
+          );
+        }
+
+        // Scroll hint entrance
+        if (scrollHintRef.current) {
+          tl.fromTo(
+            scrollHintRef.current,
+            { autoAlpha: 0, y: -15 },
+            { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
+            0.7
+          );
+        }
+      };
+
+      let revealed = false;
+      const triggerReveal = () => {
+        if (revealed) return;
+        revealed = true;
+        playReveal();
+      };
+
+      if (typeof document !== "undefined" && document.body.classList.contains("loaded")) {
+        triggerReveal();
+      } else {
+        // Initially hide elements cleanly so they don't flash before preloader finishes
+        const initialHides = [
           badgeRef.current,
-          { opacity: 0, y: -20, scale: 0.9 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.7)" },
-          0.2
-        );
-      }
-
-      const textTargets = [
-        greetingRef.current,
-        introRef.current,
-        nameRef.current,
-        subRef.current,
-      ].filter(Boolean);
-
-      if (textTargets.length > 0) {
-        tl.fromTo(
-          textTargets,
-          { opacity: 0, y: 35 },
-          { opacity: 1, y: 0, stagger: 0.1, duration: 0.9, ease: "power3.out" },
-          0.3
-        );
-      }
-
-      if (actionsRef.current) {
-        tl.fromTo(
+          greetingRef.current,
+          introRef.current,
+          nameRef.current,
+          subRef.current,
           actionsRef.current,
-          { opacity: 0, y: 25, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.4)" },
-          0.6
-        );
-      }
-
-      if (socialsRef.current && socialsRef.current.children.length > 0) {
-        tl.fromTo(
-          Array.from(socialsRef.current.children),
-          { opacity: 0, scale: 0, y: 15 },
-          { opacity: 1, scale: 1, y: 0, stagger: 0.08, duration: 0.6, ease: "back.out(2)" },
-          0.7
-        );
-      }
-
-      // DrawSVG on CTA button arrow path
-      if (arrowPathRef.current) {
-        tl.fromTo(
-          arrowPathRef.current,
-          { drawSVG: "0%" },
-          { drawSVG: "100%", duration: 0.8, ease: "power2.inOut" },
-          0.8
-        );
-      }
-
-      // Hero right column: 3D photo zoom-in & stats pop
-      if (photoCardRef.current) {
-        tl.fromTo(
           photoCardRef.current,
-          { opacity: 0, scale: 0.82, rotateY: -12, rotateX: 6, y: 35 },
-          { opacity: 1, scale: 1, rotateY: 0, rotateX: 0, y: 0, duration: 1.3, ease: "power3.out" },
-          0.35
-        );
-      }
-
-      if (statsGridRef.current && statsGridRef.current.children.length > 0) {
-        tl.fromTo(
-          Array.from(statsGridRef.current.children),
-          { opacity: 0, y: 25, scale: 0.9 },
-          { opacity: 1, y: 0, scale: 1, stagger: 0.12, duration: 0.8, ease: "back.out(1.5)" },
-          0.65
-        );
-      }
-
-      // Scroll hint entrance
-      if (scrollHintRef.current) {
-        tl.fromTo(
+          statsGridRef.current,
+          socialsRef.current,
           scrollHintRef.current,
-          { opacity: 0, y: -15 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-          0.9
-        );
+          gridRef.current,
+        ].filter(Boolean);
+        if (initialHides.length > 0) {
+          gsap.set(initialHides, { autoAlpha: 0 });
+        }
+
+        window.addEventListener("siteLoaded", triggerReveal, { once: true });
+        setTimeout(triggerReveal, 2600);
       }
 
       // Continuous ambient glowing tweens

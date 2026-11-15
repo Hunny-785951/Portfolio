@@ -91,7 +91,7 @@ export default function Experience() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=85%",
+          end: "+=120%",
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
@@ -100,79 +100,79 @@ export default function Experience() {
       });
 
       if (!isReduced) {
-        // PHASE 1: Zoom IN to APPEAR (0 -> 0.4)
+        // PHASE 1: Quick & Smooth Entrance (0 -> 0.22)
         scrollTl.fromTo(
           contentRef.current,
           {
-            scale: 0.75,
+            scale: 0.86,
             autoAlpha: 0,
-            filter: "blur(10px)",
+            filter: "blur(8px)",
             transformOrigin: "center center",
           },
           {
             scale: 1,
             autoAlpha: 1,
             filter: "blur(0px)",
-            duration: 0.4,
+            duration: 0.22,
             ease: "power2.out",
           },
           0
         );
 
-        if (tag.length) scrollTl.fromTo(tag, { y: -15, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.25 }, 0.08);
-        if (title.length) scrollTl.fromTo(title, { y: 25, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.3 }, 0.12);
+        if (tag.length) scrollTl.fromTo(tag, { y: -15, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.15 }, 0.04);
+        if (title.length) scrollTl.fromTo(title, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18 }, 0.06);
         if (items.length) {
           scrollTl.fromTo(
             items,
-            { y: 25, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, stagger: 0.06, duration: 0.3, ease: "power2.out" },
-            0.15
+            { y: 20, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, stagger: 0.04, duration: 0.18, ease: "power2.out" },
+            0.08
           );
         }
         if (dots.length) {
           scrollTl.fromTo(
             dots,
             { scale: 0, autoAlpha: 0 },
-            { scale: 1, autoAlpha: 1, stagger: 0.06, duration: 0.25, ease: "back.out(2)" },
-            0.18
+            { scale: 1, autoAlpha: 1, stagger: 0.04, duration: 0.16, ease: "back.out(2)" },
+            0.1
           );
         }
         if (lines.length) {
           scrollTl.fromTo(
             lines,
             { scaleY: 0, transformOrigin: "top" },
-            { scaleY: 1, stagger: 0.06, duration: 0.3, ease: "power2.out" },
-            0.2
+            { scaleY: 1, stagger: 0.04, duration: 0.18, ease: "power2.out" },
+            0.12
           );
         }
         if (statCards.length) {
           scrollTl.fromTo(
             statCards,
-            { y: 30, autoAlpha: 0, scale: 0.92 },
-            { y: 0, autoAlpha: 1, scale: 1, stagger: 0.05, duration: 0.35, ease: "back.out(1.4)" },
-            0.18
+            { y: 25, autoAlpha: 0, scale: 0.94 },
+            { y: 0, autoAlpha: 1, scale: 1, stagger: 0.04, duration: 0.2, ease: "back.out(1.4)" },
+            0.1
           );
         }
 
-        // PHASE 2: HOLD / READ (0.4 -> 0.6)
-        scrollTl.to({}, { duration: 0.2 });
+        // PHASE 2: GENEROUS HOLD / READ PHASE (0.22 -> 0.78)
+        scrollTl.to({}, { duration: 0.56 });
 
-        // PHASE 3: Continue scrolling to Zoom IN and DISAPPEAR (0.6 -> 1.0)
+        // PHASE 3: Seamless Zoom Out Exit (0.78 -> 1.0)
         scrollTl.to(
           contentRef.current,
           {
             scale: 3.5,
             autoAlpha: 0,
             filter: "blur(14px)",
-            duration: 0.4,
+            duration: 0.22,
             ease: "power2.in",
           },
-          0.6
+          0.78
         );
       } else {
-        scrollTl.fromTo(contentRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 0);
-        scrollTl.to({}, { duration: 0.2 });
-        scrollTl.to(contentRef.current, { autoAlpha: 0, duration: 0.4 }, 0.6);
+        scrollTl.fromTo(contentRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25 }, 0);
+        scrollTl.to({}, { duration: 0.55 });
+        scrollTl.to(contentRef.current, { autoAlpha: 0, duration: 0.2 }, 0.8);
       }
     },
     { scope: sectionRef }
@@ -191,7 +191,7 @@ export default function Experience() {
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
-        padding: "60px 48px",
+        padding: "40px 48px",
         margin: "0",
         marginTop: "-100vh",
       }}
@@ -217,13 +217,13 @@ export default function Experience() {
             {/* Left Column: Context & Timeline */}
             <div className="exp-left-col">
               <div className="section-tag exp-tag">03 — experience</div>
-              <h2 className="section-title exp-title" style={{ marginBottom: "20px" }}>
+              <h2 className="section-title exp-title" style={{ marginBottom: "16px" }}>
                 Where I&apos;ve been.
               </h2>
 
               <div className="exp-list">
                 {experiences.map((exp, idx) => (
-                  <div key={idx} className="exp-item" style={{ padding: "14px 0" }}>
+                  <div key={idx} className="exp-item" style={{ padding: "10px 0" }}>
                     <div className="exp-timeline">
                       <div className="exp-dot"></div>
                       <div className="exp-line"></div>

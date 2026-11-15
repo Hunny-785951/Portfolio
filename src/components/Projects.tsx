@@ -131,8 +131,8 @@ export default function Projects() {
 
       const isMobile = window.innerWidth < 768;
       const radius = isMobile ? 340 : (window.innerWidth < 1200 ? 480 : 540);
-      const angleStep = isMobile ? 42 : 46;
-      const yStep = isMobile ? 60 : 90;
+      const angleStep = isMobile ? 32 : 36;
+      const yStep = isMobile ? 55 : 80;
 
       // Position each arm in true 3D cylindrical spiral coordinates
       arms.forEach((arm, i) => {
@@ -142,34 +142,35 @@ export default function Projects() {
       });
 
       // Master scroll-driven timeline matching site-wide zoom flow
+      // Extended runway (+350%) and dampened scrub (1.2) for a significantly slower, smoother rotation speed
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=220%",
+          end: "+=350%",
           pin: true,
-          scrub: 0.8,
+          scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
       if (!isReduced) {
-        // PHASE 1: ZOOM IN TO APPEAR (0.0 -> 0.25)
+        // PHASE 1: ZOOM IN TO APPEAR (0.0 -> 0.16)
         // Zooms the ENTIRE section seamlessly into view (matches Hero, About, Skills, Experience)
         scrollTl.fromTo(
           zoomWrapperRef.current,
           {
-            scale: 0.75,
+            scale: 0.8,
             autoAlpha: 0,
-            filter: "blur(10px)",
+            filter: "blur(8px)",
             transformOrigin: "center center",
           },
           {
             scale: 1,
             autoAlpha: 1,
             filter: "blur(0px)",
-            duration: 0.25,
+            duration: 0.16,
             ease: "power2.out",
           },
           0
@@ -183,31 +184,33 @@ export default function Projects() {
           scrollTl.fromTo(
             svgElements,
             { drawSVG: "0%" },
-            { drawSVG: "100%", duration: 0.2, stagger: 0.015, ease: "power2.inOut" },
-            0.05
+            { drawSVG: "100%", duration: 0.15, stagger: 0.015, ease: "power2.inOut" },
+            0.04
           );
         }
 
-        // PHASE 2: 3D SPIRAL SCROLL ROTATION (0.20 -> 0.75)
-        // Smoothly rotates through all 6 cards in pure 3D space
+        // PHASE 2: 3D SPIRAL SCROLL ROTATION (0.16 -> 0.84)
+        // Calmer, gentler rotation speed spread over a wider scroll timeline
         const totalRotation = (totalCards - 1) * angleStep;
         const totalYTravel = (totalCards - 1) * yStep;
+        const rotationStart = 0.16;
+        const rotationDuration = 0.68;
 
         scrollTl.to(
           spiralStageRef.current,
           {
             rotationY: -totalRotation,
             y: -totalYTravel,
-            duration: 0.55,
+            duration: rotationDuration,
             ease: "none",
           },
-          0.2
+          rotationStart
         );
 
         // Visibility & focus choreography for cards along the spiral
         cardWraps.forEach((wrap, i) => {
-          const peakProgress = 0.2 + (i / (totalCards - 1)) * 0.55;
-          const segment = 0.55 / (totalCards - 1);
+          const peakProgress = rotationStart + (i / (totalCards - 1)) * rotationDuration;
+          const segment = rotationDuration / (totalCards - 1);
 
           if (i === 0) {
             // Card 0 starts in focus, transitions to 0.75 opacity as spiral turns
@@ -233,7 +236,7 @@ export default function Projects() {
                 duration: segment * 0.5,
                 ease: "power1.out",
               },
-              Math.max(0.2, peakProgress - segment * 0.5)
+              Math.max(rotationStart, peakProgress - segment * 0.5)
             );
 
             if (i < totalCards - 1) {
@@ -251,7 +254,7 @@ export default function Projects() {
           }
         });
 
-        // PHASE 3: ZOOM IN AND DISAPPEAR (0.75 -> 1.0)
+        // PHASE 3: ZOOM IN AND DISAPPEAR (0.84 -> 1.0)
         // Seamless exit zoom of the entire section into Experience (matches Hero, About, Skills)
         scrollTl.to(
           zoomWrapperRef.current,
@@ -259,15 +262,15 @@ export default function Projects() {
             scale: 3.5,
             autoAlpha: 0,
             filter: "blur(14px)",
-            duration: 0.25,
+            duration: 0.16,
             ease: "power2.in",
           },
-          0.75
+          0.84
         );
       } else {
-        scrollTl.fromTo(zoomWrapperRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 0);
-        scrollTl.to({}, { duration: 0.2 });
-        scrollTl.to(zoomWrapperRef.current, { autoAlpha: 0, duration: 0.4 }, 0.6);
+        scrollTl.fromTo(zoomWrapperRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 0);
+        scrollTl.to({}, { duration: 0.4 });
+        scrollTl.to(zoomWrapperRef.current, { autoAlpha: 0, duration: 0.3 }, 0.7);
       }
 
       // Interactive 3D tilt on card hover
@@ -374,9 +377,7 @@ export default function Projects() {
               Selected work.
             </h2>
           </div>
-          <div style={{ fontSize: "12px", color: "var(--text-muted)", letterSpacing: "0.5px" }}>
-            <span>Scroll to explore 3D spiral ◆</span>
-          </div>
+
         </div>
 
         {/* 3D Spiral Stage Container: permanent 3D space, never flattened */}
@@ -407,98 +408,98 @@ export default function Projects() {
               transformStyle: "preserve-3d",
             }}
           >
-          {PROJECTS.map((project, i) => (
-            <div
-              key={project.title}
-              ref={(el) => {
-                armContainersRef.current[i] = el;
-              }}
-              className="spiral-arm"
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transformStyle: "preserve-3d",
-                pointerEvents: "auto",
-              }}
-            >
+            {PROJECTS.map((project, i) => (
               <div
+                key={project.title}
                 ref={(el) => {
-                  cardWrapRefs.current[i] = el;
+                  armContainersRef.current[i] = el;
                 }}
-                className="spiral-card-wrapper"
+                className="spiral-arm"
                 style={{
-                  width: "min(340px, 82vw)",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
                   transformStyle: "preserve-3d",
-                  willChange: "transform, opacity",
-                  backfaceVisibility: "visible",
+                  pointerEvents: "auto",
                 }}
               >
-                <div className="work-card">
-                  <div className="work-thumb">
-                    <div className={`work-thumb-inner ${project.thumbClass}`}>
-                      <div className="grid-lines"></div>
-                      {project.svgIcon}
+                <div
+                  ref={(el) => {
+                    cardWrapRefs.current[i] = el;
+                  }}
+                  className="spiral-card-wrapper"
+                  style={{
+                    width: "min(340px, 82vw)",
+                    transformStyle: "preserve-3d",
+                    willChange: "transform, opacity",
+                    backfaceVisibility: "visible",
+                  }}
+                >
+                  <div className="work-card">
+                    <div className="work-thumb">
+                      <div className={`work-thumb-inner ${project.thumbClass}`}>
+                        <div className="grid-lines"></div>
+                        {project.svgIcon}
+                      </div>
+                      <div className={`work-label ${project.labelClass || ""}`}>{project.label}</div>
                     </div>
-                    <div className={`work-label ${project.labelClass || ""}`}>{project.label}</div>
-                  </div>
 
-                  <div className="work-body">
-                    <div className="work-title">{project.title}</div>
-                    <div className="work-desc">{project.desc}</div>
+                    <div className="work-body">
+                      <div className="work-title">{project.title}</div>
+                      <div className="work-desc">{project.desc}</div>
 
-                    <div className="work-stack">
-                      {project.stack.map((tech) => (
-                        <span key={tech} className="stack-tag">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                      <div className="work-stack">
+                        {project.stack.map((tech) => (
+                          <span key={tech} className="stack-tag">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
 
-                    <div className="work-links">
-                      {project.liveUrl && (
+                      <div className="work-links">
+                        {project.liveUrl && (
+                          <Magnetic>
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="work-link"
+                            >
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
+                                <path
+                                  d="M1 6h10M6 1c-2 1-3 3-3 5s1 4 3 5M6 1c2 1 3 3 3 5s-1 4-3 5"
+                                  stroke="currentColor"
+                                  strokeWidth="1"
+                                />
+                              </svg>
+                              Live App
+                            </a>
+                          </Magnetic>
+                        )}
+
                         <Magnetic>
                           <a
-                            href={project.liveUrl}
+                            href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="work-link"
                           >
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                              <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
-                              <path
-                                d="M1 6h10M6 1c-2 1-3 3-3 5s1 4 3 5M6 1c2 1 3 3 3 5s-1 4-3 5"
-                                stroke="currentColor"
-                                strokeWidth="1"
-                              />
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                             </svg>
-                            Live App
+                            GitHub
                           </a>
                         </Magnetic>
-                      )}
-
-                      <Magnetic>
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="work-link"
-                        >
-                          <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                          </svg>
-                          GitHub
-                        </a>
-                      </Magnetic>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
 }
