@@ -1,62 +1,74 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValue,
-  useVelocity,
-  useAnimationFrame
-} from "framer-motion";
-
-const wrap = (min: number, max: number, v: number) => {
-  const rangeSize = max - min;
-  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
-};
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 export default function Marquee() {
   const items = [
-    "React.js", "TypeScript", "Tailwind CSS", "Spring Boot", "Node.js", 
-    "MySQL", "Figma", "REST APIs", "Git & GitHub", "PHP / Laravel"
+    "React.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Spring Boot",
+    "Node.js",
+    "MySQL",
+    "Figma",
+    "REST APIs",
+    "Git & GitHub",
+    "PHP / Laravel",
   ];
 
-  const baseX = useMotionValue(0);
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 50,
-    stiffness: 400
-  });
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false
-  });
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  const directionFactor = useRef<number>(1);
+  useGSAP(
+    () => {
+      const track = trackRef.current;
+      if (!track) return;
 
-  useAnimationFrame((t, delta) => {
-    let moveBy = directionFactor.current * -1.5 * (delta / 1000);
+      // Seamless infinite horizontal loop
+      const tween = gsap.to(track, {
+        xPercent: -50,
+        repeat: -1,
+        duration: 25,
+        ease: "none",
+      });
 
-    if (velocityFactor.get() < 0) {
-      directionFactor.current = -1;
-    } else if (velocityFactor.get() > 0) {
-      directionFactor.current = 1;
-    }
+      // Scroll velocity influence via ScrollTrigger
+      ScrollTrigger.create({
+        onUpdate: (self) => {
+          const velocity = self.getVelocity();
+          const boost = gsap.utils.clamp(-5, 5, velocity / 350);
+          const targetTimeScale = boost < 0 ? -1 + boost : 1 + boost;
 
-    moveBy += directionFactor.current * moveBy * velocityFactor.get();
-    baseX.set(baseX.get() + moveBy * 50);
-  });
+          gsap.to(tween, {
+            timeScale: targetTimeScale,
+            duration: 0.25,
+            overwrite: "auto",
+          });
 
-  const x = useTransform(baseX, (v) => `${wrap(-50, 0, v)}%`);
+          // Smoothly settle back to default forward speed
+          gsap.to(tween, {
+            timeScale: 1,
+            duration: 1.2,
+            delay: 0.2,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        },
+      });
+    },
+    { scope: marqueeRef }
+  );
 
   return (
-    <div className="marquee-wrapper">
-      <motion.div className="marquee-track" style={{ x }}>
+    <div className="marquee-wrapper" ref={marqueeRef}>
+      <div className="marquee-track" ref={trackRef}>
         {[...items, ...items, ...items, ...items].map((item, idx) => (
-          <div key={idx} className="marquee-item">{item}</div>
+          <div key={idx} className="marquee-item">
+            {item}
+          </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
